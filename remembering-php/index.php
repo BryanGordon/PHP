@@ -70,9 +70,6 @@ $person["languages"][] = "Java";
   <?php endforeach; ?>
 </ul>
 
-
-
-
 <style>
   :root {
     color-scheme: light dark;
