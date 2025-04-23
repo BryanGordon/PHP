@@ -1,7 +1,5 @@
 <?php
-declare(strict_types=1);
 
-const API_URL = "https://whenisthenextmcufilm.com/api";
 /*
 Realizar el llamado de una api usando cURL
 # Inicializar una nueva sesion  de cURL; ch = cURL handle
@@ -20,45 +18,14 @@ $data = json_decode($result, true);
 
 curl_close($ch);
 */
-
-function get_data(string $url): array {
-  $result = file_get_contents($url);
-  $data = json_decode($result, true);
-
-  return $data;
-}
+require_once 'consts.php';
+require_once 'functions.php';
 
 $data = get_data(API_URL);
+$untilMessage = get_until_message($data["days_until"])
 
 ?>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Peliculas MCU</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
-</head>
-
-<main>
-  <section>
-    <img src="<?=$data["poster_url"]; ?>" width="300" alt="Poster de la pelicula <?= $data["title"]; ?>" style="border-radius: 16px;">
-  </section>
-
-  <hgroup>
-    <h3><?= $data["title"]?></h3>
-    <span style="font-weight: bold;">Se estrena en <?=$data["days_until"]; ?> dias</span>
-    <p>Fecha de estreno: <?= $data["release_date"]; ?></p>
-    <p>La siguiente es: <?= $data["following_production"]["title"]; ?></p>
-  </hgroup>
-</main>
-
-<style>
-  :root {
-    color-scheme: light dark;
-  }
-
-  body {
-    display: grid;
-    place-content: center;
-  }
-</style>
+<?php render_template('head', $data);  ?>
+<?php require 'sections/main.php'?>
+<?php render_template('styles'); ?>
