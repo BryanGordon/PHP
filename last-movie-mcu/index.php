@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
+
 const API_URL = "https://whenisthenextmcufilm.com/api";
+/*
+Realizar el llamado de una api usando cURL
 # Inicializar una nueva sesion  de cURL; ch = cURL handle
 $ch = curl_init(API_URL);
 
@@ -15,8 +19,17 @@ $result = curl_exec($ch);
 $data = json_decode($result, true);
 
 curl_close($ch);
+*/
 
-var_dump($data);
+function get_data(string $url): array {
+  $result = file_get_contents($url);
+  $data = json_decode($result, true);
+
+  return $data;
+}
+
+$data = get_data(API_URL);
+
 ?>
 
 <head>
@@ -28,11 +41,14 @@ var_dump($data);
 
 <main>
   <section>
-    <img src="<?=$data["poster_url"] ?>" width="300" alt="Poster de la pelicula <?= $data["title"] ?>" style="border-radius: 16px;">
+    <img src="<?=$data["poster_url"]; ?>" width="300" alt="Poster de la pelicula <?= $data["title"]; ?>" style="border-radius: 16px;">
   </section>
 
   <hgroup>
     <h3><?= $data["title"]?></h3>
+    <span style="font-weight: bold;">Se estrena en <?=$data["days_until"]; ?> dias</span>
+    <p>Fecha de estreno: <?= $data["release_date"]; ?></p>
+    <p>La siguiente es: <?= $data["following_production"]["title"]; ?></p>
   </hgroup>
 </main>
 
